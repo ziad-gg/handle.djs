@@ -1,4 +1,4 @@
-import { Client, Message, Snowflake } from "discord.js";
+import { Client, Message, SlashCommandBuilder, Snowflake } from "discord.js";
 
 declare module "handler.dts" {
     //#region classes
@@ -23,6 +23,7 @@ declare module "handler.dts" {
         static $O(somename?: boolean): typeof CommandBuilder;
         static $D(description: string): typeof CommandBuilder;
         static $L(label: string): typeof CommandBuilder;
+        static $S(builder: SlashCommandBuilder): typeof CommandBuilder;
     }
 
     export class EventBuilder {
