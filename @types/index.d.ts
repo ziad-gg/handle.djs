@@ -1,4 +1,4 @@
-import { Client, Message, SlashCommandBuilder, Snowflake } from "discord.js";
+import { ChatInputCommandInteraction, Client, Message, SlashCommandBuilder, Snowflake } from "discord.js";
 
 declare module "handler.dts" {
     //#region classes
@@ -18,7 +18,7 @@ declare module "handler.dts" {
 
         static $N(_$: TemplateStringsArray): typeof CommandBuilder;
         static $M(call: (message: Message) => (Promise<any> | any)): typeof CommandBuilder;
-        static $I(call: (message: import('discord.js').Interaction) => (Promise<any> | any)): typeof CommandBuilder;
+        static $I(call: (interaction: ChatInputCommandInteraction) => (Promise<any> | any)): typeof CommandBuilder;
         static $C(cooldown: number): typeof CommandBuilder;
         static $O(somename?: boolean): typeof CommandBuilder;
         static $D(description: string): typeof CommandBuilder;
