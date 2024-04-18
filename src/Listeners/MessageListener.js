@@ -17,5 +17,6 @@ module.exports = async function (message, app) {
     const command = app.commands.get(commandName);
     if (!command || (command.owners && !app.owners?.includes?.(message.author.id))) return;
 
+    if (!command.MessageExecution) return;
     command.MessageExecution(message);
 };

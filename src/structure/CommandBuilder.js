@@ -1,3 +1,4 @@
+const { SlashCommandBuilder } = require('discord.js');
 const Application = require('./Application.js');
 
 class CommandBuilder {
@@ -12,7 +13,7 @@ class CommandBuilder {
      */
     static $N(_$) {
         Application.commands.set(arguments[0][0], {});
-        this.$ = arguments[0][0];
+        this.$ = arguments[0][0].toLowerCase();
 
         return this;
     };
@@ -113,6 +114,24 @@ class CommandBuilder {
 
         return this;
     };
+
+    /**
+     * 
+     * @param {SlashCommandBuilder} builder 
+     */
+    static $S(builder) {
+        const command = Application.commands.get(this.$);
+
+        if (!this.$ || !command) throw new Error('Empty Command');
+        
+        builder.setName(this.$);
+        !builder.description && builder.setDescription(command.description);
+        
+        command.builder = builder;
+        Application.commands.set(this.$, command);
+
+        return this;
+    }
 
 };
 

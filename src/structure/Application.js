@@ -1,6 +1,8 @@
-const { Client, Message, CommandInteraction, Events } = require('discord.js');
+const { Client, Message, CommandInteraction, Events, Routes } = require('discord.js');
 const Utils = require('../utils/readPath.js');
+
 const MessageListener = require('../Listeners/MessageListener.js');
+const InteractionListener = require('../Listeners/InteractionListener.js');
 
 class Application {
 
@@ -51,15 +53,29 @@ class Application {
         if (data.messages?.bots && typeof data.messages.bots == 'boolean') Application.messages.bots = data.messages.bots;
 
         this.client.on('messageCreate', (message) => MessageListener(message, Application));
+        this.client.on('interactionCreate', (interaction) => InteractionListener(interaction, Application));
 
         Application.events.forEach((value, key) => {
-            if ((!Events[key] && !Object.values(Events).includes(key)) || typeof value.call !== 'function') return;
+            if (value.call && key && typeof value.call == 'function') {
+                value.once ? this.client.once(key, value.call) : this.client.on(key, value.call);
+            };
 
-            const event = Events[key] || Object.values(Events).find(where => where == key);
-            if (!value.call || !event) Application.events.delete(key);
-
-            value.once ? this.client.once(event, value.call) : this.client.on(event, value.call);
             Application.events.delete(key);
+        });
+
+        const commands = [];
+
+        Application.commands.forEach((value, key) => {
+            if (value.builder) commands.push(value.builder);
+        });
+
+        commands.length > 0 && this.client.once('ready', async (client) => {
+            const request = await client.rest.put(
+                Routes.applicationCommands(client.user.id),
+                { body: commands },
+            );
+
+            client.emit('reload', request)
         });
 
         this.client.Application = Application;
