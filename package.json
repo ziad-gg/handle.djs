@@ -36,10 +36,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ziad-gg/handler.djs"
+    "url": "git+https://github.com/ziad-gg/handler.dts"
   },
   "bugs": {
-    "url": "https://github.com/ziad-gg/handler.djs/issues"
+    "url": "https://github.com/ziad-gg/handler.dts/issues"
   },
   "homepage": "https://handler.dsjx.repl.co/",
   "license": "MIT"
