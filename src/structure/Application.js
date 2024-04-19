@@ -1,12 +1,36 @@
-const { Client, Message, CommandInteraction, Events, Routes } = require('discord.js');
+const {
+    Routes,
+    GatewayDispatchEvents,
+    /* Types */
+    Client,
+    Message,
+    SlashCommandBuilder,
+    ContextMenuCommandBuilder,
+    ChatInputCommandInteraction,
+    UserContextMenuCommandInteraction,
+    MessageContextMenuCommandInteraction
+} = require('discord.js');
+
 const Utils = require('../utils/readPath.js');
 
 const MessageListener = require('../Listeners/MessageListener.js');
 const InteractionListener = require('../Listeners/InteractionListener.js');
 
 class Application {
-
-    /** @type {Map<string, {MessageExecution?: (message: Message) => Promise, description?: string, owners: boolean, cooldown: number, InteractionExecution: (interaction: CommandInteraction) => Promise }>} @private */
+    /**
+     * @type {Map<string, {
+     *  MessageExecution?: (message: Message) => Promise,
+     *  InteractionExecution?: (interaction: ChatInputCommandInteraction) => Promise,
+     *  ContextMenuExecution?: (interaction: ChatInputCommandInteraction | UserContextMenuCommandInteraction | MessageContextMenuCommandInteraction) => Promise,
+     *  MessageContextMenuCommandBuilder?: ContextMenuCommandBuilder
+     *  UserContextMenuCommandBuilder?: ContextMenuCommandBuilder
+     *  builder?: SlashCommandBuilder,
+     *  owners?: boolean,
+     *  cooldown?: number,
+     *  description?: string,
+     *  label?: string,
+     * }>}
+     */
     static commands = new Map();
     /** @type {Array<number>} @private */
     static owners = [];
@@ -14,7 +38,7 @@ class Application {
     static prefix = '!';
     /** @type {{ bots: boolean }} @private */
     static messages = null;
-    /** @type {Map<string, { call: Function, once: boolean }> @private} */
+    /** @type {Map<string, { call: Function, once: boolean }>}  @private */
     static events = new Map();
 
     /**
@@ -26,12 +50,13 @@ class Application {
      * validations?: string, 
      * prefix?: string, 
      * owners?: Array<number>, 
+     * applicationCommands: boolean,
      * messages?: { bots: boolean }
      *  }} data 
      */
     constructor(client, data) {
         this.client = client;
-        this.data = data;
+        this.data = data ?? {};
 
         this.client.Application = this;
 
@@ -42,6 +67,25 @@ class Application {
 
     build() {
         const data = this.data;
+
+        data.applicationCommands != false && this.client.ws.once(GatewayDispatchEvents.Ready, async (client) => {
+            const commands = [];
+
+            Application.commands.forEach((value, key) => {
+                if (value.builder) commands.push(value.builder);
+                if (value.MessageContextMenuCommandBuilder) commands.push(value.MessageContextMenuCommandBuilder);
+                if (value.UserContextMenuCommandBuilder) commands.push(value.UserContextMenuCommandBuilder);
+            });
+
+            if (commands.length > 0) {
+                const request = await this.client.rest.put(
+                    Routes.applicationCommands(client.user.id),
+                    { body: commands }
+                );
+
+                this.client.emit('reload', request);
+            };
+        });
 
         if (data.commands) Application.load(data.commands);
         if (data.events) Application.load(data.events);
@@ -61,21 +105,6 @@ class Application {
             };
 
             Application.events.delete(key);
-        });
-
-        const commands = [];
-
-        Application.commands.forEach((value, key) => {
-            if (value.builder) commands.push(value.builder);
-        });
-
-        commands.length > 0 && this.client.once('ready', async (client) => {
-            const request = await client.rest.put(
-                Routes.applicationCommands(client.user.id),
-                { body: commands },
-            );
-
-            client.emit('reload', request)
         });
 
         this.client.Application = Application;

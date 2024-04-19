@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ContextMenuCommandBuilder, ChatInputCommandInteraction, ApplicationCommandType } = require('discord.js');
 const Application = require('./Application.js');
 
 class CommandBuilder {
@@ -123,15 +123,59 @@ class CommandBuilder {
         const command = Application.commands.get(this.$);
 
         if (!this.$ || !command) throw new Error('Empty Command');
-        
+
         builder.setName(this.$);
         !builder.description && builder.setDescription(command.description);
-        
+
         command.builder = builder;
         Application.commands.set(this.$, command);
 
         return this;
-    }
+    };
+
+    /**
+     * 
+     * @param {ContextMenuCommandBuilder} builder 
+     */
+    static $CM(builder) {
+        const command = Application.commands.get(this.$);
+
+        if (!this.$ || !command) throw new Error('Empty Command');
+
+        builder.setName(this.$);
+
+        if (!builder.type) {
+            command.MessageContextMenuCommandBuilder = new ContextMenuCommandBuilder().setName(this.$).setType(ApplicationCommandType.Message);
+            command.UserContextMenuCommandBuilder = new ContextMenuCommandBuilder().setName(this.$).setType(ApplicationCommandType.User);
+
+        } else if (builder.type == ApplicationCommandType.Message) {
+            command.MessageContextMenuCommandBuilder = builder;
+
+        } else if (builder.type == ApplicationCommandType.User) {
+            command.UserContextMenuCommandBuilder = builder;
+            
+        };
+
+        Application.commands.set(this.$, command);
+
+        return this;
+    };
+
+    /**
+     * 
+     * @param {(interaction: ChatInputCommandInteraction)} call 
+     * @returns 
+     */
+    static $CME(call) {
+        const command = Application.commands.get(this.$);
+
+        if (!this.$ || !command) throw new Error('Empty Command');
+
+        command.ContextMenuExecution = call;
+        Application.commands.set(this.$, command);
+
+        return this;
+    };
 
 };
 
