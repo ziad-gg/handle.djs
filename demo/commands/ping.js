@@ -14,5 +14,5 @@ CommandBuilder.$N`ping`
  * @param {Message} message 
  */
 async function Execution(message) {
-    console.log(message);
+    message.reply(`pong 🏓`);
 };

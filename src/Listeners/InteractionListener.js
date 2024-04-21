@@ -1,12 +1,13 @@
-const { CommandInteraction } = require('discord.js');
+const { ChatInputCommandInteraction } = require('discord.js');
 const Application = require('../structure/Application');
+
 /**
  * 
- * @param {CommandInteraction} interaction 
+ * @param {ChatInputCommandInteraction} interaction 
  * @param {typeof Application} app 
  */
 module.exports = async function (interaction, app) {
-    if (interaction.isChatInputCommand())  {
+    if (interaction.isChatInputCommand()) {
         if (!app.messages.bots && interaction.user.bot) return;
 
         const commandName = interaction.commandName.toLowerCase();
@@ -15,7 +16,33 @@ module.exports = async function (interaction, app) {
         if (!command || (command.owners && !app.owners?.includes?.(interaction.user.id))) return;
 
         if (!command.InteractionExecution) return;
-        command.InteractionExecution(interaction);
+
+        //#region Validation
+        const ValidationData = app.validations;
+
+        if (Array.from(ValidationData.keys()).length > 0) {
+            const validations = Array.from(ValidationData.values()).sort((a, b) => a.order - b.order).filter(e => e.type.includes('message'))
+            let x = true;
+
+            for (const validation_step of validations) {
+                if (!x) break;
+
+                await new Promise(async (res) => {
+                    const validation_call = validation_step.validation;
+
+                    const next = res;
+                    const end = () => { x = false; res(); };
+
+                    validation_call({ interaction }, next, end);
+                });
+            };
+
+            x && command.InteractionExecution(interaction);
+        } else {
+            command.InteractionExecution(interaction);
+        };
+        //#endregion
+
     } else if (interaction.isUserContextMenuCommand() || interaction.isMessageContextMenuCommand()) {
         const commandName = interaction.commandName.toLowerCase();
 

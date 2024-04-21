@@ -7,7 +7,7 @@ class EventBuilder {
     static $N() {
         this.$ = arguments['1'] ? arguments[1] : arguments[0][0];
 
-        Application.events.set(this.$, () => { });
+        Application.events.set(this.$, {});
 
         return this;
     };

@@ -1,4 +1,11 @@
-import { ChatInputCommandInteraction, Client, ContextMenuCommandBuilder, Message, SlashCommandBuilder, Snowflake } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    Client,
+    ContextMenuCommandBuilder,
+    Message,
+    SlashCommandBuilder,
+    Snowflake
+} from "discord.js";
 
 declare module "handler.dts" {
     //#region classes
@@ -37,6 +44,15 @@ declare module "handler.dts" {
         static $N(_$: TemplateStringsArray): typeof EventBuilder;
         static $E(call: (...arg0: any[]) => any): typeof EventBuilder;
         static $O(somename?: boolean): typeof EventBuilder;
+    }
+
+    export class ValidationBuilder {
+        static $E(validation: (controller: { message: Message<true> | Message, interaction: ChatInputCommandInteraction}, next: () => {}, end: () => {}) => any): typeof ValidationBuilder;
+        static $O(order?: number): typeof ValidationBuilder;
+        static get message(): typeof ValidationBuilder;
+        static get interaction(): typeof ValidationBuilder;
+        static get end(): typeof ValidationBuilder;
+        static $end(): undefined;
     }
 
     //#endregion

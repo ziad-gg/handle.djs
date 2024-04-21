@@ -40,6 +40,8 @@ class Application {
     static messages = null;
     /** @type {Map<string, { call: Function, once: boolean }>}  @private */
     static events = new Map();
+    /** @type {Set<{ order: number, validation: () => {}, type: "message" | "interaction" }>} */
+    static validations = new Set();
 
     /**
      * 
