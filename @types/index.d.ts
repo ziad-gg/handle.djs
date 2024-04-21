@@ -51,6 +51,12 @@ declare module "handler.dts" {
         static $O(order?: number): typeof ValidationBuilder;
         static get message(): typeof ValidationBuilder;
         static get interaction(): typeof ValidationBuilder;
+
+        /** @deprecated Use .message */
+        static get $M(): typeof ValidationBuilder;
+        /** @deprecated use .interaction */
+        static get $I(): typeof ValidationBuilder;
+
         static get end(): typeof ValidationBuilder;
         static $end(): undefined;
     }

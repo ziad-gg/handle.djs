@@ -46,7 +46,7 @@ CommandBuilder.$N`ping`.$M(Execution);
  * @param {Message} message 
  */
 function Execution(message) {
-    message.reply('pong 🏓')
+    message.replyNoMention('pong 🏓')
 }
 ```
 </center>

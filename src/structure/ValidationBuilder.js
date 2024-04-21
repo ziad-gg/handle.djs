@@ -14,6 +14,14 @@ class ValidationBuilder {
         return this;
     };
 
+    static get interaction() {
+        return ValidationBuilder.$I
+    };
+
+    static get message() {
+        return ValidationBuilder.$M
+    };
+
     static get end() {
 
         if (!ValidationBuilder.$.order) throw new Error('Invalid Order');

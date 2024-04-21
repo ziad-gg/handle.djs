@@ -1,5 +1,5 @@
 const { Client } = require('discord.js');
-const { Application, ValidationBuilder } = require('../src');
+const { Application } = require('../src');
 
 const client = new Client({
     intents: 3276799
