@@ -44,7 +44,7 @@ Message.prototype.sendTimedMessage = async function (options, timeout) {
  * @returns {string | undefined}
  */
 Message.prototype.args = function (index) {
-    const args = this.content.slice(this.client.Application.prefix.length).split(' ');
+    const args = this.content.slice(this.client.Application.prefix.length).trim(' ').split(/ +/g);
     args.shift();
 
     return args[index];
