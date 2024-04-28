@@ -1,6 +1,6 @@
 {
   "name": "handler.dts",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "A package to manage all discord bot Files",
   "types": "@types/index.d.ts",
   "author": "Ziath#1768 <zemad3040@gmail.com>",

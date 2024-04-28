@@ -38,8 +38,8 @@ class Application {
     static prefix = '!';
     /** @type {{ bots: boolean }} @private */
     static messages = null;
-    /** @type {Map<string, { call: Function, once: boolean }>}  @private */
-    static events = new Map();
+    /** @type {Set<{ name: string, call: Function, once: boolean }>}   */
+    static events = new Set();
     /** @type {Set<{ order: number, validation: () => {}, type: "message" | "interaction" }>} @private */
     static validations = new Set();
 
@@ -101,12 +101,10 @@ class Application {
         this.client.on('messageCreate', (message) => MessageListener(message, Application));
         this.client.on('interactionCreate', (interaction) => InteractionListener(interaction, Application));
 
-        Application.events.forEach((value, key) => {
-            if (value.call && key && typeof value.call == 'function') {
-                value.once ? this.client.once(key, value.call) : this.client.on(key, value.call);
+        Application.events.forEach((value) => {
+            if (value.call && typeof value.call == 'function' && value.name) {
+                value.once ? this.client.once(value.name, value.call) : this.client.on(value.name, value.call);
             };
-
-            Application.events.delete(key);
         });
 
         this.client.Application = Application;

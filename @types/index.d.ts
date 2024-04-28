@@ -44,6 +44,7 @@ declare module "handler.dts" {
         static $N(_$: TemplateStringsArray): typeof EventBuilder;
         static $E(call: (...arg0: any[]) => any): typeof EventBuilder;
         static $O(somename?: boolean): typeof EventBuilder;
+        static $L(): typeof EventBuilder;
     }
 
     export class ValidationBuilder {

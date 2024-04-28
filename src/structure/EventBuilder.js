@@ -3,11 +3,13 @@ const Application = require('./Application.js');
 class EventBuilder {
     /** @private */
     static $ = '';
+    /** @private */
+    static data = {};
 
     static $N() {
         this.$ = arguments['1'] ? arguments[1] : arguments[0][0];
 
-        Application.events.set(this.$, {});
+        EventBuilder.data.name = this.$;
 
         return this;
     };
@@ -17,28 +19,24 @@ class EventBuilder {
      * @param {() => any} call 
      */
     static $E(call) {
-        let event = Application.events.get(this.$);
+        if (!this.$) throw new Error('Empty Event');
 
-        if (!this.$ || !event) throw new Error('Empty Event');
-
-        event = event ?? {};
-        event.call = call;
-
-        Application.events.set(this.$, event);
+        EventBuilder.data.call = call;
 
         return this;
     };
 
     static $O(somename = true) {
-        let event = Application.events.get(this.$);
+        if (!this.$) throw new Error('Empty Event');
+        
+        EventBuilder.data.once = true;
 
-        if (!this.$ || !event) throw new Error('Empty Event');
+        return this;
+    };
 
-        event = event ?? {};
-        event.once = true;
-
-        Application.events.set(this.$, event);
-
+    static $L() {
+        Application.events.add(EventBuilder.data);
+        EventBuilder.data = {};
         return this;
     };
 };
