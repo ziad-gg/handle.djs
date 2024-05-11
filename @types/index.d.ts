@@ -77,14 +77,21 @@ export interface ApplicationData {
     build(): void;
 }
 
+
 declare module "discord.js" {
     export interface Client {
         Application: ApplicationData
     }
 
+    type MessagePayloadTemplate = string | MessagePayload | MessageReplyOptions;
+
     export interface Message<InGuild extends boolean = boolean> {
-        replyNoMention(options: string | MessagePayload | MessageReplyOptions): Promise<Message<InGuild>>;
-        sendTimedMessage(options: string | MessagePayload | MessageReplyOptions, timeout: number): Promise<Message<InGuild>>;
+        replyNoMention(options: MessagePayloadTemplate): Promise<Message<InGuild>>;
+        sendTimedMessage(options: MessagePayloadTemplate, timeout: number): Promise<Message<InGuild>>;
+
+        Eedit(options: MessagePayloadTemplate): Promise<Message<InGuild> | boolean>;
+        Edelete(): Promise<Message<InGuild> | boolean>;
+
         args(index: number): string | undefined;
         getUser(id: number | string | Snowflake, type?: 'cache' | 'fetch' | 'guild' | 'guild-fetch'): Promise<User>
     }

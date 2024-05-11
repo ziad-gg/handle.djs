@@ -60,3 +60,17 @@ Message.prototype.getUser = async function (id, source = 'fetch') {
     if (source == 'guild-fetch') return this.guild.members.fetch(id).catch(e => null);
     if (source == 'fetch') return this.client.users.fetch(id).catch(e => null);
 };
+
+Message.prototype.Edelete = async function () {
+    return this.deletable && this.delete().catch(e => e);
+};
+
+Message.prototype.Eedit = async function (options) {
+    options = (typeof options === 'string') ? { content: options } : options;
+
+    options.allowedMentions = {
+        repliedUser: false
+    };
+    
+    return this.editable && this.edit(options).catch(e => e);
+};
