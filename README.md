@@ -71,8 +71,8 @@ const { Message, ChatInputCommandInteraction } = require('discord.js');
 const { ValidationBuilder } = require('handler.dts');
 
 ValidationBuilder.$E(Validation).$O(1).$end();
+
 /**
- * 
  * @param {{ message: Message, interaction: ChatInputCommandInteraction}} controller 
  * @param {() => {}} next 
  * @param {() => {}} end 
