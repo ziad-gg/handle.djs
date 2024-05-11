@@ -42,5 +42,9 @@ const { CommandBuilder } = require('handler.dts');
 CommandBuilder.$N`ping`.$M((message) => {
     message.reply(`pong 🏓`);
 });
+
+CommandBuilder.$N`uptime`.$M((message) => {
+    message.reply(`uptime: 1d 🌄`); 
+});
 ```
 </center>
