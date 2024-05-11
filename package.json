@@ -44,6 +44,7 @@
   "homepage": "https://handler.dsjx.repl.co/",
   "license": "MIT",
   "devDependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "handler.djs": "^2.6.38"
   }
 }
