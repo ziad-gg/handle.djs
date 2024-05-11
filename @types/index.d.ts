@@ -1,10 +1,13 @@
 import {
-    ChatInputCommandInteraction,
     Client,
     ContextMenuCommandBuilder,
-    Message,
     SlashCommandBuilder,
-    Snowflake
+    Snowflake,
+    /** types */
+    Message,
+    ContextMenuCommandInteraction,
+    ChatInputCommandInteraction,
+    MessageComponentInteraction,
 } from "discord.js";
 
 declare module "handler.djs" {
@@ -33,9 +36,11 @@ declare module "handler.djs" {
         static $S(builder: SlashCommandBuilder): typeof CommandBuilder; // setSlashCommandBuilder | interactionOn
         static $CM(builder: ContextMenuCommandBuilder): typeof CommandBuilder;
 
-        static $M<M = Message<true>>(call: (message: M) => (Promise<any> | any)): typeof CommandBuilder; // setMessageExecution
-        static $I<I = ChatInputCommandInteraction>(call: (interaction: I) => (Promise<any> | any)): typeof CommandBuilder; // setInteractionExecution
-        static $CME<I = ChatInputCommandInteraction>(call: (interaction: I) => (Promise<any> | any)): typeof CommandBuilder;
+        static $M<M = Message<true>>(call: (message: M) => any): typeof CommandBuilder; // setMessageExecution
+        static $B<I = MessageComponentInteraction>(call: (interaction: I) => any): typeof CommandBuilder;
+
+        static $I<I = ChatInputCommandInteraction>(call: (interaction: I) => any): typeof CommandBuilder; // setInteractionExecution
+        static $CME<I = ContextMenuCommandInteraction>(call: (interaction: I) => any): typeof CommandBuilder;
     }
 
     export class EventBuilder {
@@ -65,6 +70,7 @@ declare module "handler.djs" {
     namespace utils {
         export function toDiscordId(text: string): string;
         export function isPositiveInteger(text: string): boolean;
+        export const Intents: 3276799;
     }
     //#endregion
 }
@@ -87,12 +93,22 @@ declare module "discord.js" {
 
     export interface Message<InGuild extends boolean = boolean> {
         replyNoMention(options: MessagePayloadTemplate): Promise<Message<InGuild>>;
-        sendTimedMessage(options: MessagePayloadTemplate, timeout: number): Promise<Message<InGuild>>;
+        sendTimedMessage(options: MessagePayloadTemplate, timeout: number, repliedUser: boolean): Promise<Message<InGuild>>;
 
         Eedit(options: MessagePayloadTemplate): Promise<Message<InGuild> | boolean>;
         Edelete(): Promise<Message<InGuild> | boolean>;
 
-        args(index: number): string | undefined;
+        args<type = any>(index: number): type;
         getUser(id: number | string | Snowflake, type?: 'cache' | 'fetch' | 'guild' | 'guild-fetch'): Promise<User>
+    }
+
+    export interface ChatInputCommandInteraction {
+        replyNoMention<inGuild extends boolean = true>(options: MessagePayloadTemplate): Promise<Message<inGuild>>;
+        sendTimedMessage<inGuild extends boolean = true>(options: MessagePayloadTemplate, timeout: number): Promise<Message<inGuild>>;
+    }
+
+    export interface ContextMenuCommandInteraction {
+        replyNoMention<inGuild extends boolean = true>(options: MessagePayloadTemplate): Promise<Message<inGuild>>;
+        sendTimedMessage<inGuild extends boolean = true>(options: MessagePayloadTemplate, timeout: number): Promise<Message<inGuild>>;
     }
 }

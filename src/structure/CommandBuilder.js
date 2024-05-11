@@ -177,6 +177,16 @@ class CommandBuilder {
         return this;
     };
 
+    static $B(call) {
+        const command = Application.commands.get(this.$);
+
+        if (!this.$ || !command) throw new Error('Empty Command');
+
+        command.ButtonInteractionExecution = call;
+        Application.commands.set(this.$, command);
+
+        return this;
+    };
 };
 
 module.exports = CommandBuilder;

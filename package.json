@@ -1,6 +1,6 @@
 {
   "name": "handler.djs",
-  "version": "1.0.17",
+  "version": "2.6.38",
   "description": "A package to manage all discord bot Files",
   "types": "@types/index.d.ts",
   "author": "Ziath#1768 <zemad3040@gmail.com>",
@@ -42,5 +42,8 @@
     "url": "https://github.com/ziad-gg/handler.djs/issues"
   },
   "homepage": "https://handler.dsjx.repl.co/",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
 }

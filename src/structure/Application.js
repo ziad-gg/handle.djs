@@ -8,7 +8,8 @@ const {
     ContextMenuCommandBuilder,
     ChatInputCommandInteraction,
     UserContextMenuCommandInteraction,
-    MessageContextMenuCommandInteraction
+    MessageContextMenuCommandInteraction,
+    ButtonInteraction
 } = require('discord.js');
 
 const Utils = require('../utils/readPath.js');
@@ -24,6 +25,7 @@ class Application {
      *  ContextMenuExecution?: (interaction: ChatInputCommandInteraction | UserContextMenuCommandInteraction | MessageContextMenuCommandInteraction) => Promise,
      *  MessageContextMenuCommandBuilder?: ContextMenuCommandBuilder
      *  UserContextMenuCommandBuilder?: ContextMenuCommandBuilder
+     *  ButtonInteractionExecution?: (interaction: ButtonInteraction) => any
      *  builder?: SlashCommandBuilder,
      *  owners?: boolean,
      *  cooldown?: number,

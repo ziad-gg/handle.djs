@@ -13,3 +13,6 @@ new Application(client, {
 });
 
 client.Application.build();
+
+require('dotenv');
+client.login(process.env.TOKEN)

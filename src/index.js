@@ -7,3 +7,5 @@ exports.ValidationBuilder = require('./structure/ValidationBuilder.js');
 exports.utils = require('./utils/utils.js');
 
 require('./plugins/Message.js');
+require('./plugins/ChatInputCommandInteraction.js');
+require('./plugins/ContextMenuCommandInteraction.js');

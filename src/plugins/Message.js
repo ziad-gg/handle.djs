@@ -20,16 +20,15 @@ Message.prototype.replyNoMention = function (options) {
 };
 
 /**
- * 
  * @param {string | MessagePayload | import('discord.js').MessageReplyOptions} options 
  * @param {number} timeout
  * @returns {Promise<Message<true>>}
  */
-Message.prototype.sendTimedMessage = async function (options, timeout) {
+Message.prototype.sendTimedMessage = async function (options, timeout, repliedUser = false) {
     options = (typeof options === 'string') ? { content: options } : options;
 
     options.allowedMentions = {
-        repliedUser: false
+        repliedUser: repliedUser
     };
 
     const message = await this.reply(options);

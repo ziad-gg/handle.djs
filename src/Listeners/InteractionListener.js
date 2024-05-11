@@ -1,4 +1,4 @@
-const { ChatInputCommandInteraction } = require('discord.js');
+const { ChatInputCommandInteraction, MessageComponentInteraction } = require('discord.js');
 const Application = require('../structure/Application');
 
 /**
@@ -45,11 +45,16 @@ module.exports = async function (interaction, app) {
 
     } else if (interaction.isUserContextMenuCommand() || interaction.isMessageContextMenuCommand()) {
         const commandName = interaction.commandName.toLowerCase();
-
         const command = app.commands.get(commandName);
         if (!command || (command.owners && !app.owners?.includes?.(interaction.user.id))) return;
-
         if (!command.ContextMenuExecution) return;
-        command.ContextMenuExecution(interaction);
+        command.ContextMenuExecution(interaction); 
+
+    } else if (interaction.isButton()) {
+        const commandName = interaction.customId.toLowerCase();
+        const command = app.commands.get(commandName.split('-')[0]);
+        if (!command || (command.owners && !app.owners?.includes?.(interaction.user.id))) return;
+        if (!command.ButtonInteractionExecution) return;
+        command.ButtonInteractionExecution(interaction); 
     }
 };
