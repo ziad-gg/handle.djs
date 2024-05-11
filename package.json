@@ -1,5 +1,5 @@
 {
-  "name": "handler.dts",
+  "name": "handler.djs",
   "version": "1.0.17",
   "description": "A package to manage all discord bot Files",
   "types": "@types/index.d.ts",

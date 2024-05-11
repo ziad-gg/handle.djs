@@ -1,15 +1,15 @@
 <center>
-<img src="https://nodei.co/npm/handler.dts.png?downloads=true&stars=true" alt="v">
+<img src="https://nodei.co/npm/handler.djs.png?downloads=true&stars=true" alt="v">
 
 # Introduction
 
-handler.dts is a powerful tool designed to simplify the management of Discord.js bot files. It aims to enhance productivity by reducing the amount of time and code required to handle various aspects of a Discord bot, while also improving performance.
+handler.djs is a powerful tool designed to simplify the management of Discord.js bot files. It aims to enhance productivity by reducing the amount of time and code required to handle various aspects of a Discord bot, while also improving performance.
 
 # Installing
  ```bash
   $ npm init
   $ npm i discord.js
-  $ npm i handler.dts
+  $ npm i handler.djs
  ```
 
 <h6>You can Handle Files with this package</h6>
@@ -17,7 +17,7 @@ handler.dts is a powerful tool designed to simplify the management of Discord.js
 # SetUp
 ```js
 const { Client } = require('discord.js');
-const { Application } = require('handler.dts');
+const { Application } = require('handler.djs');
 
 const client = new Client({
     intents: 3276799
@@ -37,7 +37,7 @@ client.login('Token');
 ### commands Setup
 
 ```js
-const { CommandBuilder } = require('handler.dts');
+const { CommandBuilder } = require('handler.djs');
 
 CommandBuilder.$N`ping`.$M((message) => {
     message.reply(`pong 🏓`);
@@ -52,7 +52,7 @@ CommandBuilder.$N`uptime`.$M((message) => {
 
 ```js
 const { Client, Events } = require('discord.js');
-const { EventBuilder } = require('handler.dts');
+const { EventBuilder } = require('handler.djs');
 
 EventBuilder.$N`${Events.ClientReady}`.$E(Execution).$O().$L();
 
@@ -68,7 +68,7 @@ function Execution(client) {
 
 ```js
 const { Message, ChatInputCommandInteraction } = require('discord.js');
-const { ValidationBuilder } = require('handler.dts');
+const { ValidationBuilder } = require('handler.djs');
 
 ValidationBuilder.$E(Validation).$O(1).$end();
 

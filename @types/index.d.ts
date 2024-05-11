@@ -7,7 +7,7 @@ import {
     Snowflake
 } from "discord.js";
 
-declare module "handler.dts" {
+declare module "handler.djs" {
     //#region classes
     export class Application {
         constructor(client: Client, data?: {
