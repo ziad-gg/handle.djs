@@ -1,7 +1,7 @@
 const { Client, Events } = require('discord.js');
 const { EventBuilder } = require('../../src');
 
-EventBuilder.$N`${Events.ClientReady}`.$E(Execution).$O();
+EventBuilder.$N`${Events.ClientReady}`.$E(Execution).$O().$L();
 
 /**
  * 
