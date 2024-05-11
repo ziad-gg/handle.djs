@@ -63,4 +63,27 @@ function Execution(client) {
     console.log(client.user.tag);
 };
 ```
+
+### validation Setup
+
+```js
+const { Message, ChatInputCommandInteraction } = require('discord.js');
+const { ValidationBuilder } = require('handler.dts');
+
+ValidationBuilder.$E(Validation).$O(1).$end();
+/**
+ * 
+ * @param {{ message: Message, interaction: ChatInputCommandInteraction}} controller 
+ * @param {() => {}} next 
+ * @param {() => {}} end 
+ */
+function Validation(controller, next, end) {
+    console.log(`First Validation Type: ${controller.interaction ? 'interaction' : 'message'}`);
+
+    next(); // pass to next validation
+    console.log('First Validation: Passed');
+
+    // end(); //  stop command 
+}
+```
 </center>
