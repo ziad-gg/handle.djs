@@ -1,4 +1,4 @@
-const { Message, MessagePayload, User } = require('discord.js');
+const { Message, MessagePayload, User, GuildMember } = require('discord.js');
 const { setTimeout: wait } = require('node:timers/promises');
 
 /**
@@ -39,7 +39,6 @@ Message.prototype.sendTimedMessage = async function (options, timeout) {
 };
 
 /**
- * 
  * @param {number} index 
  * @returns {string | undefined}
  */
@@ -51,14 +50,13 @@ Message.prototype.args = function (index) {
 };
 
 /**
- * 
  * @param {string | number} id 
  * @param {'cache' | 'fetch' | 'guild' | 'guild-fetch'} source 
- * @returns {Promise<User>}
+ * @returns {Promise<User | GuildMember> | (User | GuildMember)}
  */
 Message.prototype.getUser = async function (id, source = 'fetch') {
     if (source == 'cache') return this.client.users.cache.get(id);
     if (source == 'guild') return this.guild.members.cache.get(id);
     if (source == 'guild-fetch') return this.guild.members.fetch(id).catch(e => null);
     if (source == 'fetch') return this.client.users.fetch(id).catch(e => null);
-}
+};

@@ -59,6 +59,7 @@ class Application {
     constructor(client, data) {
         this.client = client;
         this.data = data ?? {};
+        this.store = new Map();
 
         this.client.Application = this;
 
@@ -115,6 +116,18 @@ class Application {
         const data = Utils(path).filter(e => e.endsWith('s'));
         data.map(e => require(e));
         return this;
+    };
+
+    setData(data = {}) {
+        if (typeof data !== "object") throw new Error('data must be an object');
+
+        Object.keys(data).forEach(key => {
+            this.store.set(key, data[key]);
+        });
+    };
+
+    getData(key) {
+        return this.store.get(key);
     };
 };
 

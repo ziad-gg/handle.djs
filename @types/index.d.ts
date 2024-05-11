@@ -33,9 +33,9 @@ declare module "handler.dts" {
         static $S(builder: SlashCommandBuilder): typeof CommandBuilder; // setSlashCommandBuilder | interactionOn
         static $CM(builder: ContextMenuCommandBuilder): typeof CommandBuilder;
 
-        static $M(call: (message: Message) => (Promise<any> | any)): typeof CommandBuilder; // setMessageExecution
-        static $I(call: (interaction: ChatInputCommandInteraction) => (Promise<any> | any)): typeof CommandBuilder; // setInteractionExecution
-        static $CME(call: (interaction: ChatInputCommandInteraction) => (Promise<any> | any)): typeof CommandBuilder;
+        static $M<M = Message<true>>(call: (message: M) => (Promise<any> | any)): typeof CommandBuilder; // setMessageExecution
+        static $I<I = ChatInputCommandInteraction>(call: (interaction: I) => (Promise<any> | any)): typeof CommandBuilder; // setInteractionExecution
+        static $CME<I = ChatInputCommandInteraction>(call: (interaction: I) => (Promise<any> | any)): typeof CommandBuilder;
     }
 
     export class EventBuilder {
@@ -48,7 +48,7 @@ declare module "handler.dts" {
     }
 
     export class ValidationBuilder {
-        static $E(validation: (controller: { message: Message<true> | Message, interaction: ChatInputCommandInteraction}, next: () => {}, end: () => {}) => any): typeof ValidationBuilder;
+        static $E(validation: (controller: { message: Message<true> | Message, interaction: ChatInputCommandInteraction }, next: () => {}, end: () => {}) => any): typeof ValidationBuilder;
         static $O(order?: number): typeof ValidationBuilder;
         static get message(): typeof ValidationBuilder;
         static get interaction(): typeof ValidationBuilder;
@@ -62,13 +62,19 @@ declare module "handler.dts" {
         static $end(): undefined;
     }
 
+    namespace utils {
+        export function toDiscordId(text: string): string;
+        export function isPositiveInteger(text: string): boolean;
+    }
     //#endregion
 }
 
 export interface ApplicationData {
     readonly owners?: Array<string | number>;
     readonly prefix?: string;
-    build: () => void;
+    setData<D = { [key: string]: any }>(data: D): void;
+    getData<D = any>(key: string): D;
+    build(): void;
 }
 
 declare module "discord.js" {
