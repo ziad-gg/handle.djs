@@ -37,16 +37,10 @@ client.login('Token');
 ### commands Setup
 
 ```js
-const { Message } = require('discord.js');
 const { CommandBuilder } = require('handler.dts');
 
-CommandBuilder.$N`ping`.$M(Execution);
-
-/**
- * @param {Message} message 
- */
-function Execution(message) {
-    message.replyNoMention('pong 🏓')
-}
+CommandBuilder.$N`ping`.$M((message) => {
+    message.reply(`pong 🏓`);
+});
 ```
 </center>
