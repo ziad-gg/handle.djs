@@ -12,7 +12,7 @@ handler.dts is a powerful tool designed to simplify the management of Discord.js
   $ npm i handler.dts
  ```
 
-<h6>You can Handel Files with this package</h6>
+<h6>You can Handle Files with this package</h6>
 
 # SetUp
 ```js
