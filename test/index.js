@@ -5,7 +5,15 @@ const client = new Client({
     intents: utils.Intents
 });
 
-new Application(client);
+new Application(client, {
+    definedValidations: true
+});
+
+client.Application.setCooldown({
+    message: "**{UserMention}**, Cool down (**{counter}** left)",
+    reply: false,
+    Mdelete: 1500
+});
 
 EventBuilder.$N`${Events.ClientReady}`.$E((client) => console.log(client.user.tag)).$O().$L();
 
@@ -17,7 +25,7 @@ CommandBuilder.$N`ping`.$D('reply with pong').$M((message) => {
     interaction.replyNoMention('pong (context menu) 🏓');
 }).$B((interaction) => {
     interaction.reply('pong (Button) 🏓');
-});
+}).$C(Number.MAX_SAFE_INTEGER)
 
 CommandBuilder.$N`clear`.$D('Clear Chat').$M(async (message) => {
     const amount = message.args(0);
@@ -44,6 +52,6 @@ CommandBuilder.$N`hello`.$M(async (message) => {
 
     await user.send(`Hello From ${message.author.username}`);
     await message.sendTimedMessage(`Sent Hello To ${user.username}`, 1500);
-});
+}).$C(10_000)
 
 client.Application.build();

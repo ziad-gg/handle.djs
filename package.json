@@ -46,6 +46,6 @@
   "license": "MIT",
   "devDependencies": {
     "dotenv": "^16.4.5",
-    "handler.djs": "^2.6.38"
+    "handler.djs": "^2.6.39"
   }
 }
