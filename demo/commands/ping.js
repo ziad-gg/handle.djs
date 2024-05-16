@@ -8,11 +8,14 @@ CommandBuilder.$N`ping`
     .$M(Execution)
     .$I(Execution)
     .$CME(Execution)
+    .$B(Execution)
+    .$L('label me')
+    .$C(5000)
 
 /**
  * 
  * @param {Message} message 
  */
 async function Execution(message) {
-    message.sendTimedMessage(`pong 🏓`, 1000);
+    message.replyNoMention(`pong 🏓`, 1000);
 };

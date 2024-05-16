@@ -8,11 +8,16 @@ const client = new Client({
 new Application(client, {
     commands: __dirname.concat('/commands'),
     events: __dirname.concat('/events'),
-    // validations: __dirname.concat('/validations'),
-    owners: ['1222336578651689101'],
-});
+    definedValidations: true
+})
+
+// client.Application.setCooldown({
+//     message: "**{UserMention}**, Cool down (**{counter}** left)",
+//     reply: false,
+//     Mdelete: 1500
+// });
 
 client.Application.build();
 
 require('dotenv');
-client.login(process.env.TOKEN)
+client.login(process.env.TOKEN);

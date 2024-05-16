@@ -20,6 +20,7 @@ declare module "handler.djs" {
             validations?: string,
             prefix?: string,
             applicationCommands?: boolean
+            definedValidations?: boolean
         });
         build(): void;
     }
@@ -75,14 +76,42 @@ declare module "handler.djs" {
     //#endregion
 }
 
+interface cooldown {
+    message?: string,
+    reply?: boolean,
+    long?: boolean,
+    Mdelete?: boolean,
+    once?: boolean,
+}
+
 export interface ApplicationData {
     readonly owners?: Array<string | number>;
     readonly prefix?: string;
     setData<D = { [key: string]: any }>(data: D): void;
     getData<D = any>(key: string): D;
+    setPrefix(prefix: string): ApplicationData;
+    setCooldown(data: cooldown): ApplicationData;
     build(): void;
 }
 
+interface Command {
+    name: string
+    description: string,
+    cooldown: string | number,
+    label: string,
+    message_support: boolean,
+    interaction_support: boolean,
+    context_support: boolean,
+    button_support: boolean,
+}
+
+interface ApplicationDJS {
+    prefix: string,
+    owners: string[],
+    cooldown: cooldown,
+    commands: number,
+    events: number,
+}
 
 declare module "discord.js" {
     export interface Client {
@@ -100,6 +129,9 @@ declare module "discord.js" {
 
         args<type = any>(index: number): type;
         getUser(id: number | string | Snowflake, type?: 'cache' | 'fetch' | 'guild' | 'guild-fetch'): Promise<User>
+
+        command: Command;
+        Application: ApplicationDJS;
     }
 
     export interface ChatInputCommandInteraction {

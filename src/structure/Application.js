@@ -40,10 +40,12 @@ class Application {
     static prefix = '!';
     /** @type {{ bots: boolean }} @private */
     static messages = null;
-    /** @type {Set<{ name: string, call: Function, once: boolean }>}   */
+    /** @type {Set<{ name: string, call: Function, once: boolean }>} @private  */
     static events = new Set();
     /** @type {Set<{ order: number, validation: () => {}, type: "message" | "interaction" }>} @private */
     static validations = new Set();
+    /** @type {Map<string, { replied: boolean, time: number }>} */
+    static cooldowns = new Map();
 
     /**
      * 
@@ -55,7 +57,8 @@ class Application {
      * prefix?: string, 
      * owners?: Array<number>, 
      * applicationCommands: boolean,
-     * messages?: { bots: boolean }
+     * messages?: { bots: boolean },
+     * definedValidations?: boolean
      *  }} data 
      */
     constructor(client, data) {
@@ -68,10 +71,13 @@ class Application {
         Application.prefix = '!';
         Application.owners = [];
         Application.messages = { bots: false };
+        Application.cooldownConfig = {};
     };
 
     build() {
         const data = this.data;
+
+        if (data.definedValidations) require('../scripts/cooldown.js');
 
         data.applicationCommands != false && this.client.ws.once(GatewayDispatchEvents.Ready, async (client) => {
             const commands = [];
@@ -111,6 +117,7 @@ class Application {
         });
 
         this.client.Application = Application;
+
     };
 
     /** @private */
@@ -131,6 +138,40 @@ class Application {
     getData(key) {
         return this.store.get(key);
     };
+
+    setPrefix(prefix = "!") {
+        if (typeof prefix !== "string") this.prefix = "!"
+        else this.prefix = prefix;
+        return this;
+    };
+
+    //#region cooldown
+    setCooldown({
+        message = "**{Username}**, Cool down (**{counter}** left)",
+        reply = true,
+        long = true,
+        Mdelete = null,
+        EphemeralReply = true,
+        once = false
+    }) {
+
+        if (typeof message !== "string") throw new Error("Content must be an String only");
+        if (typeof reply !== "boolean") throw new Error("reply must be an Boolean only");
+        if (typeof long !== "boolean") throw new Error("long must be an Boolean only");
+        if (typeof once !== "boolean") throw new Error("once option must be an Boolean only");
+        if (typeof EphemeralReply !== "boolean") throw new Error("EphemeralReply must be an Boolean only");
+        if (Mdelete && typeof Mdelete !== "number") throw new Error("Mdelete must be a number");
+
+        Application.cooldownConfig.message = message;
+        Application.cooldownConfig.long = long;
+        Application.cooldownConfig.reply = reply;
+        Application.cooldownConfig.Mdelete = Mdelete;
+        Application.cooldownConfig.EphemeralReply = EphemeralReply;
+        Application.cooldownConfig.once = once;
+
+        return Application;
+    };
+    //#endregion cooldown
 };
 
 module.exports = Application;

@@ -1,5 +1,6 @@
 const { Message } = require('discord.js');
 const Application = require('../structure/Application.js');
+const Base = require('../Base.js');
 
 /**
  * 
@@ -17,6 +18,9 @@ module.exports = async function (message, app) {
     if (!command || (command.owners && !app.owners?.includes?.(message.author.id))) return;
 
     if (!command.MessageExecution) return;
+
+    message.command = Base.createCommandInterface(commandName, command);
+    message.Application = Base.createApplicationInterface(app);
 
     //#region Validation
     const ValidationData = app.validations;

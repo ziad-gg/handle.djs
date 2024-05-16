@@ -1,6 +1,6 @@
 {
   "name": "handler.djs",
-  "version": "2.6.38",
+  "version": "2.6.39",
   "description": "A package to manage all discord bot Files",
   "types": "@types/index.d.ts",
   "author": "Ziath#1768 <zemad3040@gmail.com>",
@@ -29,7 +29,8 @@
   ],
   "main": "src/index.js",
   "dependencies": {
-    "discord.js": "^14.15.2"
+    "discord.js": "^14.15.2",
+    "ms": "^2.1.3"
   },
   "scripts": {
     "start": "node somename.js"
